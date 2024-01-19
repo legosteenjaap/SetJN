@@ -1,5 +1,14 @@
-class Card:
+import pygame
+import os
+
+from pygame.locals import RLEACCEL
+
+
+class Card(pygame.sprite.Sprite):
     def __init__(self, color, shape, fill, number):
+        super(Card, self).__init__()
+        self.surf = pygame.image.load(os.path.dirname(os.path.realpath(__file__)) + "\\kaarten\\" + color + shape + fill + number + ".gif")
+        self.rect = self.surf.get_rect()
         self._color=color
         self._shape=shape
         self._fill=fill

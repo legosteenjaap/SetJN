@@ -3,6 +3,7 @@ from pygame import (
     Surface
 )
 from card import Card
+from deck import Deck
 
 pygame.init()
 
@@ -11,14 +12,13 @@ screenSize = (screenInfo.current_w, screenInfo.current_h)
 screen=pygame.display.set_mode(screenSize)
 pygame.display.toggle_fullscreen()
 
-card = Card("red", "squiggle", "empty", "1") 
-
 margin = 20
 
 selectedCards = [False]*12
-
+card = Card("red", "squiggle", "empty", "1")
 #Returns card positions for cards on the table
 def getCardsPos(index: int):
+    global card
     cardWidth = card.surf.get_width()
     cardHeight = card.surf.get_height()
     cardXPos = screenSize[0]/2 - (cardWidth+margin)*(index%6-2)
@@ -27,16 +27,17 @@ def getCardsPos(index: int):
 
 def getCardIndexFromPos(x: int, y: int):
     for index in range(0,12):
-        cardXPos, cardYPos, cardWidth, cardHeight  = getCardsPos(index)
+        cardXPos, cardYPos, cardWidth, cardHeight = getCardsPos(index)
         if x >= cardXPos and x <= (cardXPos + cardWidth) and y >= cardYPos and y <= (cardYPos + cardHeight):
             return index
     return -1
         
 
-
 def displayCards(screen: Surface, cards: list, selectedCards: list):
     for i in range(0,12):
         
+        card = cards[i]
+
         cardXPos, cardYPos, cardWidth, cardHeight  = getCardsPos(i)
 
         #Draw card
@@ -57,14 +58,14 @@ def handleEvents(event):
         if cardIndex != -1: 
             selectedCards[cardIndex] = not selectedCards[cardIndex]
         
-
-
+deck = Deck()
+tableCards = deck.drawCards(12)
 while running:
     for event in pygame.event.get():
         handleEvents(event)
     
     screen.fill((32,134,29))
-    displayCards(screen, [card]*12, selectedCards)
+    displayCards(screen, tableCards, selectedCards)
     pygame.display.flip()
 
 pygame.quit()

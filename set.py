@@ -15,40 +15,43 @@ pygame.display.toggle_fullscreen()
 margin = 20
 
 selectedCards = [False]*12
-card = Card("red", "squiggle", "empty", "1")
+
+standardCard = Card("red", "squiggle", "empty", "1")
+cardWidth = standardCard.surf.get_width()
+cardHeight = standardCard.surf.get_height()
+
 #Returns card positions for cards on the table
-def getCardsPos(index: int):
-    global card
-    cardWidth = card.surf.get_width()
-    cardHeight = card.surf.get_height()
+def getCardHitBox(index: int):
+    global cardWidth
+    global cardHeight
     cardXPos = screenSize[0]/2 - (cardWidth+margin)*(index%6-2)
     cardYPos = screenSize[1]/2 - (cardHeight+margin)*((index-index%6)/6+1)
     return (cardXPos, cardYPos, cardWidth, cardHeight)
 
 def getCardIndexFromPos(x: int, y: int):
     for index in range(0,12):
-        cardXPos, cardYPos, cardWidth, cardHeight = getCardsPos(index)
+        cardXPos, cardYPos, cardWidth, cardHeight = getCardHitBox(index)
         if x >= cardXPos and x <= (cardXPos + cardWidth) and y >= cardYPos and y <= (cardYPos + cardHeight):
             return index
     return -1
         
 
 def displayCards(screen: Surface, cards: list, selectedCards: list):
-    for i in range(0,12):
+    for cardIndex in range(0,12):
         
-        card = cards[i]
+        card = cards[cardIndex]
 
-        cardXPos, cardYPos, cardWidth, cardHeight  = getCardsPos(i)
+        cardXPos, cardYPos, cardWidth, cardHeight  = getCardHitBox(cardIndex)
 
         #Draw card
         screen.blit(card.surf, (cardXPos, cardYPos))
 
         #Draw selection
-        if (selectedCards[i]): pygame.draw.rect(screen, (239,170,32), pygame.Rect(cardXPos, cardYPos, cardWidth, cardHeight), 5, border_radius=7)
+        if (selectedCards[cardIndex]): pygame.draw.rect(screen, (239,170,32), pygame.Rect(cardXPos, cardYPos, cardWidth, cardHeight), 5, border_radius=7)
 
 running = True
 
-def handleEvents(event):
+def handleEvent(event):
     if event.type == pygame.QUIT:
         global running 
         running = False
@@ -62,7 +65,7 @@ deck = Deck()
 tableCards = deck.drawCards(12)
 while running:
     for event in pygame.event.get():
-        handleEvents(event)
+        handleEvent(event)
     
     screen.fill((32,134,29))
     displayCards(screen, tableCards, selectedCards)

@@ -3,7 +3,8 @@ from pygame import (
     Surface
 )
 from card import (
-    Card
+    Card,
+    CardSprite
 )
 from table import Table
 from deck import Deck
@@ -19,35 +20,36 @@ cardMargin = 20
 
 selectedCards = [False]*12
 
-standardCard = Card("red", "squiggle", "empty", "1")
-cardWidth = standardCard.surf.get_width()
-cardHeight = standardCard.surf.get_height()
+table = Table()        
+deck = Deck()
+table.replaceAllCards(deck)
 
 #Returns card positions for cards on the table
-def getCardHitBox(index: int):
-    global cardWidth
-    global cardHeight
+def getCardHitBox(cardSprite: CardSprite, index: int):
+    cardWidth = cardSprite.surf.get_width()
+    cardHeight = cardSprite.surf.get_height()
     cardXPos = screenSize[0]/2 - (cardWidth+cardMargin)*(index%6-2)
     cardYPos = screenSize[1]/2 - (cardHeight+cardMargin)*((index-index%6)/6+1)
     return (cardXPos, cardYPos, cardWidth, cardHeight)
 
 def getCardIndexFromPos(x: int, y: int):
+    global table
     for index in range(0,12):
-        cardXPos, cardYPos, cardWidth, cardHeight = getCardHitBox(index)
+        cardXPos, cardYPos, cardWidth, cardHeight = getCardHitBox(table.cards[index], index)
         if x >= cardXPos and x <= (cardXPos + cardWidth) and y >= cardYPos and y <= (cardYPos + cardHeight):
             return index
     return -1
         
 
-def displayCards(screen: Surface, cards: list, selectedCards: list):
+def displayCards(screen: Surface, cardSprites: list, selectedCards: list):
     for cardIndex in range(0,12):
         
-        card = cards[cardIndex]
+        cardSprite = cardSprites[cardIndex]
 
-        cardXPos, cardYPos, cardWidth, cardHeight  = getCardHitBox(cardIndex)
+        cardXPos, cardYPos, cardWidth, cardHeight = getCardHitBox(cardSprite, cardIndex)
 
         #Draw card
-        screen.blit(card.surf, (cardXPos, cardYPos))
+        screen.blit(cardSprite.surf, (cardXPos, cardYPos))
 
         #Draw selection
         if (selectedCards[cardIndex]): pygame.draw.rect(screen, (239,170,32), pygame.Rect(cardXPos, cardYPos, cardWidth, cardHeight), 5, border_radius=7)
@@ -63,9 +65,7 @@ def handleEvent(event):
         cardIndex = getCardIndexFromPos(x, y)
         if cardIndex != -1: 
             selectedCards[cardIndex] = not selectedCards[cardIndex]
-table = Table()        
-deck = Deck()
-table.replaceAllCards = deck.drawCards(12)
+
 while running:
     for event in pygame.event.get():
         handleEvent(event)

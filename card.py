@@ -5,6 +5,10 @@ from pygame.locals import RLEACCEL
 
 
 class Card:
+
+    def __init__(self):
+        self
+
     def __init__(self, color, shape, fill, number):
         self._color=color
         self._shape=shape
@@ -38,12 +42,11 @@ class CardSprite(pygame.sprite.Sprite):
 
     def __init__(self):
         super(CardSprite, self).__init__()
-
-    def __init__(self, card: Card):
-        super(CardSprite, self).__init__()
-        self.replaceCard(card)
     
     def replaceCard(self, card: Card):
-        self.surf = pygame.image.load(os.path.dirname(os.path.realpath(__file__)) + "\\kaarten\\" + card.color + card.shape + card.fill + card.number + ".gif")
+        self.surf = pygame.image.load(os.path.dirname(os.path.realpath(__file__)) + "\\kaarten\\" + card._color + card._shape + card._fill + card._number + ".gif")
+        #installPath = str(os.path.dirname(os.path.realpath(__file__)))
+        #print(type(installPath))
+        #self.surf = pygame.image.load(installPath+ card.color + card.shape + card.fill + card.number + ".gif")
         self.rect = self.surf.get_rect()
         self.card = card

@@ -9,7 +9,7 @@ class Table:
         self.cards = [CardSprite()]*12
 
     def replaceAllCards(self, deck: Deck):
-        drawnCards = deck.drawCards()
+        drawnCards = deck.drawCards(12)
         for i in range(0, 12):
             self.replaceCard(i, drawnCards[i])
 

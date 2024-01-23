@@ -6,7 +6,7 @@ from card import (
 class Table:
 
     def __init__(self):
-        self.cards = [CardSprite()]*12
+        self._cards = [CardSprite() for i in range(0, 12)]
 
     def replaceAllCards(self, deck: Deck):
         drawnCards = deck.drawCards(12)
@@ -15,5 +15,5 @@ class Table:
 
 
     def replaceCard(self, index: int, card: Card):
-        self.cards[index].replaceCard(card)
+        self._cards[index].replaceCard(card)
 

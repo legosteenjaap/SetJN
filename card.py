@@ -16,7 +16,7 @@ class Card:
         self._number=number
 
     def __repr__(self):
-        return self._color, self._shape, self._fill, self._number 
+        return self._color + self._shape + self._fill + self._number 
     
     def color(self, color):
         if color in ["red", "green", "purple"]:
@@ -44,9 +44,9 @@ class CardSprite(pygame.sprite.Sprite):
         super(CardSprite, self).__init__()
     
     def replaceCard(self, card: Card):
-        self.surf = pygame.image.load(os.path.dirname(os.path.realpath(__file__)) + "\\kaarten\\" + card._color + card._shape + card._fill + card._number + ".gif")
-        #installPath = str(os.path.dirname(os.path.realpath(__file__)))
-        #print(type(installPath))
-        #self.surf = pygame.image.load(installPath+ card.color + card.shape + card.fill + card.number + ".gif")
+        installPath = str(os.path.dirname(os.path.realpath(__file__)))
+        print(card)
+        self.surf = pygame.image.load(os.path.join(installPath + "\\kaarten\\") + card._color + card._shape + card._fill + card._number + ".gif")
+        
         self.rect = self.surf.get_rect()
         self.card = card

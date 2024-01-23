@@ -2,7 +2,10 @@ import pygame
 from pygame import (
     Surface
 )
-from card import Card
+from card import (
+    Card
+)
+from table import Table
 from deck import Deck
 
 pygame.init()
@@ -12,7 +15,7 @@ screenSize = (screenInfo.current_w, screenInfo.current_h)
 screen=pygame.display.set_mode(screenSize)
 pygame.display.toggle_fullscreen()
 
-margin = 20
+cardMargin = 20
 
 selectedCards = [False]*12
 
@@ -24,8 +27,8 @@ cardHeight = standardCard.surf.get_height()
 def getCardHitBox(index: int):
     global cardWidth
     global cardHeight
-    cardXPos = screenSize[0]/2 - (cardWidth+margin)*(index%6-2)
-    cardYPos = screenSize[1]/2 - (cardHeight+margin)*((index-index%6)/6+1)
+    cardXPos = screenSize[0]/2 - (cardWidth+cardMargin)*(index%6-2)
+    cardYPos = screenSize[1]/2 - (cardHeight+cardMargin)*((index-index%6)/6+1)
     return (cardXPos, cardYPos, cardWidth, cardHeight)
 
 def getCardIndexFromPos(x: int, y: int):
@@ -60,15 +63,15 @@ def handleEvent(event):
         cardIndex = getCardIndexFromPos(x, y)
         if cardIndex != -1: 
             selectedCards[cardIndex] = not selectedCards[cardIndex]
-        
+table = Table()        
 deck = Deck()
-tableCards = deck.drawCards(12)
+table.replaceAllCards = deck.drawCards(12)
 while running:
     for event in pygame.event.get():
         handleEvent(event)
     
     screen.fill((32,134,29))
-    displayCards(screen, tableCards, selectedCards)
+    displayCards(screen, table.cards, selectedCards)
     pygame.display.flip()
 
 pygame.quit()

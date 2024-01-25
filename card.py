@@ -44,9 +44,8 @@ class CardSprite(pygame.sprite.Sprite):
         super(CardSprite, self).__init__()
     
     def replaceCard(self, card: Card):
-        installPath = str(os.path.dirname(os.path.realpath(__file__)))
-        print(card)
-        self.surf = pygame.image.load(os.path.join(installPath + "\\kaarten\\") + card._color + card._shape + card._fill + card._number + ".gif")
-        
+        installPath = os.path.dirname(os.path.realpath(__file__))
+        print(os.path.join(installPath, "kaarten", str(card._color + card._shape + card._fill + card._number + ".gif")))
+        self.surf = pygame.image.load(os.path.join(installPath, "kaarten", str(card._color + card._shape + card._fill + card._number + ".gif")))
         self.rect = self.surf.get_rect()
         self.card = card

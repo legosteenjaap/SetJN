@@ -23,3 +23,6 @@ class Deck:
         for i in range(0, amount):
             drawnCards.append(self._cards.pop())
         return drawnCards
+    
+    def getCardAmount(self):
+        return len(self._cards)

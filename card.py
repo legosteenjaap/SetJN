@@ -3,10 +3,6 @@ import os
 
 from pygame.locals import RLEACCEL
 
-colors= ["red", "green", "purple"]
-shapes= ["squiggle", "oval", "diamond"]
-fills= ["empty", "filled", "shaded"]
-numbers= ["1", "2", "3"]
 
 class Card:
 
@@ -37,25 +33,25 @@ class Card:
     
     def color(self, color):
         """Changes the color of the card."""
-        if color in colors:
+        if color in ["red", "green", "purple"]:
             self._color=color
         else: return False
 
     def shape(self, shape):
         """Changes the shape of the card."""
-        if shape in shapes:
+        if shape in ["squiggle", "oval", "diamond"]:
             self._shape=shape
         else: return False
 
     def fill(self, fill):
         """Changes the fill of the card"""
-        if fill in fills:
+        if fill in ["empty", "filled", "shaded"]:
             self._fill=fill
         else: return False
 
     def number(self, number):
         """Changes the number of the card"""
-        if number in numbers:
+        if number in ["1", "2", "3"]:
             self._number=number
         else: return False
 

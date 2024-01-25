@@ -19,7 +19,7 @@ class Card(pygame.sprite.Sprite):
         self._number=number
 
     def __repr__(self):
-        return self._color, self._shape, self._fill, self._number 
+        return self._color+ self._shape+ self._fill+ self._number 
     
     def color(self, color):
         if color in colors:

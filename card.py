@@ -3,6 +3,10 @@ import os
 
 from pygame.locals import RLEACCEL
 
+colors= ["red", "green", "purple"]
+shapes= ["squiggle", "oval", "diamond"]
+fills= ["empty", "filled", "shaded"]
+numbers= ["1", "2", "3"]
 
 class Card:
 
@@ -33,27 +37,31 @@ class Card:
     
     def color(self, color):
         """Changes the color of the card."""
-        if color in ["red", "green", "purple"]:
+        if color in colors:
             self._color=color
         else: return False
 
     def shape(self, shape):
         """Changes the shape of the card."""
-        if shape in ["squiggle", "oval", "diamond"]:
+        if shape in shapes:
             self._shape=shape
         else: return False
 
     def fill(self, fill):
         """Changes the fill of the card"""
-        if fill in ["empty", "filled", "shaded"]:
+        if fill in fills:
             self._fill=fill
         else: return False
 
     def number(self, number):
         """Changes the number of the card"""
-        if number in ["1", "2", "3"]:
+        if number in numbers:
             self._number=number
         else: return False
+
+    
+    def toVector(self):
+        return [colors.index(self._color)+1, shapes.index(self._shape)+1, fills.index(self._fill)+1, numbers.index(self._number)+1]
 
 class CardSprite(pygame.sprite.Sprite):
     

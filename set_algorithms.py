@@ -24,11 +24,15 @@ def findSets(visibleCards: list):
     return solutions
 
 def findOneSet(visibleCards: list):
-    """Executes isSet() on al possible card cominations and returns the first solution it finds"""
+    """Executes isSet() on al possible card cominations in the first 21 cards and returns the first solution it finds"""
+    if len(visibleCards)>21:
+        rangeEnd=21
+    else:
+        rangeEnd=len(visibleCards)
     solutions=[]
-    for i in range(0,len(visibleCards)-2):
-        for j in range(i+1,len(visibleCards)-1):
-            for k in range(j+1,len(visibleCards)):
+    for i in range(0,rangeEnd-2):
+        for j in range(i+1,rangeEnd-1):
+            for k in range(j+1,rangeEnd):
                 if isSet([visibleCards[i],visibleCards[j],visibleCards[k]]):
                     return [i,j,k]
     return solutions

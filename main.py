@@ -20,7 +20,6 @@ while running:
     if menu.shouldCloseWindow:
         running = False
         break
-
     game = Game(screen, screenSize, menu.isMultiplayer, menu.input, menu.timeOutTime)
     while not game.isFinished:
         game.tick()

@@ -47,11 +47,9 @@ class Game:
         self.blinkingCards = []
         self.announcementPlayer = self.player1
 
-        self.currentRounds = 0
         self.startRound()
         
     def startRound(self):
-        self.currentRounds += 1
         self.startTime = pygame.time.get_ticks()
         self.stateStartTime = self.startTime
         for player in self.players:
@@ -60,8 +58,6 @@ class Game:
     def tick(self):
 
         self.joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
-
-        if (self.currentRounds >= 15 and self.state == "playing"): self.gameEnd()
 
         self.tickState()        
 
@@ -130,6 +126,9 @@ class Game:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.isFinished = True
+        elif event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 1:
+                    self.isFinished = True
         if self.state != "playing":
             return
         if self._input == "mouse":
@@ -149,8 +148,6 @@ class Game:
                 for player in self.players:
                     if not player.isComputer() and len(self.joysticks) >= player.playerNum: player.handleGamepadDPadInput(self.joysticks[player.playerNum - 1].get_hat(0))
             elif event.type == pygame.JOYBUTTONDOWN:
-                if event.button == 1:
-                    self.isFinished = True
                 for player in self.players:
                     if not player.isComputer() and len(self.joysticks) >= player.playerNum and event.instance_id == player.playerNum - 1: player.handleGamepadButtonInput(event.button)
 

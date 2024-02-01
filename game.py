@@ -23,6 +23,7 @@ class Game:
     def __init__(self, screen: Surface, screenSize, isMultiplayer: bool, input: str, timeOutTime: int):
         self.screen = screen
         self.screenSize = screenSize
+        self.joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
         self._isMultiplayer = isMultiplayer
         self._input = input
         
@@ -31,8 +32,8 @@ class Game:
         else:
             self._timeOutTime = 30
 
-        self.player1 = Player("player1", False, 1)
-        self.player2 = Player("player2", not isMultiplayer, 2)
+        self.player1 = Player("player1", False, 1, self._input)
+        self.player2 = Player("player2", not isMultiplayer, 2, self._input)
         self.players = [self.player1, self.player2]
 
         self.deck = Deck()
@@ -46,11 +47,9 @@ class Game:
         self.blinkingCards = []
         self.announcementPlayer = self.player1
 
-        self.currentRounds = 0
         self.startRound()
         
     def startRound(self):
-        self.currentRounds += 1
         self.startTime = pygame.time.get_ticks()
         self.stateStartTime = self.startTime
         for player in self.players:
@@ -58,7 +57,7 @@ class Game:
 
     def tick(self):
 
-        if (self.currentRounds >= 15 and self.state == "playing"): self.gameEnd()
+        self.joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
 
         self.tickState()        
 
@@ -127,6 +126,9 @@ class Game:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.isFinished = True
+        elif event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 1:
+                    self.isFinished = True
         if self.state != "playing":
             return
         if self._input == "mouse":
@@ -141,6 +143,14 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 for player in self.players:
                     if not player.isComputer(): player.handleKeyboardInput(event.key)
+        elif self._input == "gamepad":
+            if event.type == pygame.JOYHATMOTION:
+                for player in self.players:
+                    if not player.isComputer() and len(self.joysticks) >= player.playerNum: player.handleGamepadDPadInput(self.joysticks[player.playerNum - 1].get_hat(0))
+            elif event.type == pygame.JOYBUTTONDOWN:
+                for player in self.players:
+                    if not player.isComputer() and len(self.joysticks) >= player.playerNum and event.instance_id == player.playerNum - 1: player.handleGamepadButtonInput(event.button)
+
     
     def playerCheckIfSet(self, player: Player):
         if len(player.selectedCards) >= 3:

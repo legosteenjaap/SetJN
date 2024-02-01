@@ -2,22 +2,24 @@ import pygame
 
 player1Keys = [pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s, pygame.K_SPACE]
 player2Keys = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN, pygame.K_RETURN]
+gamepadKeys = [0, 1, 2, 3, 4]
 
 class Player:
 
-    def __init__(self, name: str, isComputer, playerNum: int):
+    def __init__(self, name: str, isComputer, playerNum: int, input: str):
         self._points = 0
         self._name = name
         self.selectedCards = []
         self._isComputer = isComputer
         self.playerNum = playerNum
         self.hoveredOverCardIndex = playerNum + 7
-        
-        if playerNum == 1:
-            self.currentKeys = player1Keys
-        elif playerNum == 2:
-            self.currentKeys = player2Keys
-
+        if input == "keyboard":
+            if playerNum == 1:
+                self.currentKeys = player1Keys
+            elif playerNum == 2:
+                self.currentKeys = player2Keys
+        elif input == "gamepad":
+            self.currentKeys = gamepadKeys
         if playerNum == 1:
             self.color = "yellow"
         elif playerNum == 2:
@@ -54,7 +56,8 @@ class Player:
             return
         self.selectedCards.append(cardIndex)
 
-    def handleKeyboardInput(self, key):
+    def handleKeyboardOrGamepadInput(self, key):
+        print(key)
         if key == self.currentKeys[0] and (self.hoveredOverCardIndex != 11 and self.hoveredOverCardIndex != 5):
             self.hoveredOverCardIndex += 1 
         if key == self.currentKeys[1] and (self.hoveredOverCardIndex != 6 and self.hoveredOverCardIndex != 0):

@@ -15,7 +15,7 @@ class Menu():
         self.startButton = Button(screen, "start", screenSize[0] / 2, screenSize[1] / 2, self.startGame)
         buttonYDiff = self.startButton.rect.height
         self.numPlayerButton = OptionButton(screen, ["singleplayer", "multiplayer"], screenSize[0] / 2, screenSize[1] / 2 + buttonYDiff, self.switchMultiplayer)
-        self.inputButton = OptionButton(screen, ["mouse", "keyboard"], screenSize[0] / 2, screenSize[1] / 2 + buttonYDiff * 2, self.switchInput)
+        self.inputButton = OptionButton(screen, ["mouse", "keyboard", "gamepad"], screenSize[0] / 2, screenSize[1] / 2 + buttonYDiff * 2, self.switchInput)
         self.quitButton = Button(screen, "quit", screenSize[0] / 2, screenSize[1] / 2 + buttonYDiff * 3, self.quitGame)
         self.buttons = [self.startButton, self.numPlayerButton, self.inputButton, self.quitButton]
         self.isMultiplayer = False
@@ -72,6 +72,8 @@ class Menu():
             self.input = "mouse"
         elif inputType == "keyboard":
             self.input = "keyboard"
+        elif inputType == "gamepad":
+            self.input = "gamepad"
 
     def switchMultiplayer(self, mode: str):
         if mode == "singleplayer":

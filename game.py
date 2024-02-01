@@ -23,6 +23,7 @@ class Game:
     def __init__(self, screen: Surface, screenSize, isMultiplayer: bool, input: str, timeOutTime: int):
         self.screen = screen
         self.screenSize = screenSize
+        self.joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
         self._isMultiplayer = isMultiplayer
         self._input = input
         
@@ -31,8 +32,8 @@ class Game:
         else:
             self._timeOutTime = 30
 
-        self.player1 = Player("player1", False, 1)
-        self.player2 = Player("player2", not isMultiplayer, 2)
+        self.player1 = Player("player1", False, 1, self._input)
+        self.player2 = Player("player2", not isMultiplayer, 2, self._input)
         self.players = [self.player1, self.player2]
 
         self.deck = Deck()
@@ -140,7 +141,11 @@ class Game:
         elif self._input == "keyboard":
             if event.type == pygame.KEYDOWN:
                 for player in self.players:
-                    if not player.isComputer(): player.handleKeyboardInput(event.key)
+                    if not player.isComputer(): player.handleKeyboardOrGamepadInput(event.key)
+        elif self._input == "gamepad":
+            if event.type == pygame.JOYHATMOTION:
+                for player in self.players:
+                    if not player.isComputer(): player.handleKeyboardOrGamepadInput(event.button)
     
     def playerCheckIfSet(self, player: Player):
         if len(player.selectedCards) >= 3:

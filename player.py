@@ -2,7 +2,6 @@ import pygame
 
 player1Keys = [pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s, pygame.K_SPACE]
 player2Keys = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN, pygame.K_RETURN]
-gamepadKeys = [0, 1, 2, 3, 4]
 
 class Player:
 
@@ -18,8 +17,6 @@ class Player:
                 self.currentKeys = player1Keys
             elif playerNum == 2:
                 self.currentKeys = player2Keys
-        elif input == "gamepad":
-            self.currentKeys = gamepadKeys
         if playerNum == 1:
             self.color = "yellow"
         elif playerNum == 2:
@@ -56,8 +53,7 @@ class Player:
             return
         self.selectedCards.append(cardIndex)
 
-    def handleKeyboardOrGamepadInput(self, key):
-        print(key)
+    def handleKeyboardInput(self, key):
         if key == self.currentKeys[0] and (self.hoveredOverCardIndex != 11 and self.hoveredOverCardIndex != 5):
             self.hoveredOverCardIndex += 1 
         if key == self.currentKeys[1] and (self.hoveredOverCardIndex != 6 and self.hoveredOverCardIndex != 0):
@@ -69,4 +65,17 @@ class Player:
         if key == self.currentKeys[4]:
             self.selectCard(self.hoveredOverCardIndex)
         
+    def handleGamepadDPadInput(self, axis):
+        if axis == (-1, 0) and (self.hoveredOverCardIndex != 11 and self.hoveredOverCardIndex != 5):
+            self.hoveredOverCardIndex += 1 
+        if axis == (1, 0) and (self.hoveredOverCardIndex != 6 and self.hoveredOverCardIndex != 0):
+            self.hoveredOverCardIndex -=1
+        if axis == (0, 1) and self.hoveredOverCardIndex <= 5:
+            self.hoveredOverCardIndex += 6
+        if axis == (0, -1) and self.hoveredOverCardIndex > 5:
+            self.hoveredOverCardIndex -=6
+    
+    def handleGamepadButtonInput(self, button):
+        if button == 0:
+            self.selectCard(self.hoveredOverCardIndex)
 

@@ -59,6 +59,8 @@ class Game:
 
     def tick(self):
 
+        self.joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
+
         if (self.currentRounds >= 15 and self.state == "playing"): self.gameEnd()
 
         self.tickState()        
@@ -141,11 +143,17 @@ class Game:
         elif self._input == "keyboard":
             if event.type == pygame.KEYDOWN:
                 for player in self.players:
-                    if not player.isComputer(): player.handleKeyboardOrGamepadInput(event.key)
+                    if not player.isComputer(): player.handleKeyboardInput(event.key)
         elif self._input == "gamepad":
             if event.type == pygame.JOYHATMOTION:
                 for player in self.players:
-                    if not player.isComputer(): player.handleKeyboardOrGamepadInput(event.button)
+                    if not player.isComputer() and len(self.joysticks) >= player.playerNum: player.handleGamepadDPadInput(self.joysticks[player.playerNum - 1].get_hat(0))
+            elif event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 1:
+                    self.isFinished = True
+                for player in self.players:
+                    if not player.isComputer() and len(self.joysticks) >= player.playerNum and event.instance_id == player.playerNum - 1: player.handleGamepadButtonInput(event.button)
+
     
     def playerCheckIfSet(self, player: Player):
         if len(player.selectedCards) >= 3:

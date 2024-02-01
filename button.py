@@ -5,28 +5,43 @@ import textrender as textrender
 
 class Button:
 
-    def __init__(self, screen: Surface, text: str, XPos: int, YPos: int, action):
+    """A class for representing a renderable button
+        
+        Fields:
+            screen (Surface): The screen on which the game is drawn
+            text (str): The text displayed on the button
+            xPos, yPos (int) Stores the position of the button
+            action (callable) Stores the function which is executed when the button is activated"""
+
+    def __init__(self, screen: Surface, text: str, xPos: int, yPos: int, action: callable):
         self.screen = screen
         self.text = text
-        self.XPos = XPos
-        self.YPos = YPos
+        self.xPos = xPos
+        self.yPos = yPos
         self.isSelected = False
-        self.buildTextRender(text)
+        self.replaceText(text)
         self.action = action
     
-    def buildTextRender(self, text: str):
+
+    def replaceText(self, text: str):
+        """Replaces the text on the button"""
         self.img = textrender.font.render(text, True,  (0,0,0))
-        self.imgSelect = textrender.font.render(text, True,  (79, 205, 104))
         self.rect = self.img.get_rect()
 
+        # If the button is selected the text becomes a greenish color
+        self.imgSelect = textrender.font.render(text, True,  (79, 205, 104))
+
     def render(self):
+        """Renders the button"""
         if not self.isSelected:
-            self.screen.blit(self.img, (self.XPos - self.rect.width / 2, self.YPos - self.rect.height / 2))
+            self.screen.blit(self.img, (self.xPos - self.rect.width / 2, self.yPos - self.rect.height / 2))
         else:
-            self.screen.blit(self.imgSelect, (self.XPos - self.rect.width / 2, self.YPos - self.rect.height / 2))
+            self.screen.blit(self.imgSelect, (self.xPos - self.rect.width / 2, self.yPos - self.rect.height / 2))
     
     def hasCollision(self, collisionXPos: int, collisionYPos: int):
-        return self.rect.collidepoint(collisionXPos - (self.XPos - self.rect.width / 2), collisionYPos - (self.YPos - self.rect.height / 2))
+        """Checks if a point collides with the button"""
+        return self.rect.collidepoint(collisionXPos - (self.xPos - self.rect.width / 2), collisionYPos - (self.yPos - self.rect.height / 2))
 
-    def doAction(self):
+    def doUpdateAction(self):
+        """Executes the action saved with the button"""
         self.action()

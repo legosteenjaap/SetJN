@@ -33,4 +33,5 @@ class Deck:
         return drawnCards
     
     def getCardAmount(self):
+        """Returns the amount of cards remaining in a deck"""
         return len(self._cards)

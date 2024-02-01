@@ -53,9 +53,12 @@ class Game:
         self.currentRounds += 1
         self.startTime = pygame.time.get_ticks()
         self.stateStartTime = self.startTime
+        for player in self.players:
+            player.selectedCards.clear()
 
     def tick(self):
-        if (self.currentRounds >= 5 and self.state == "playing"): self.gameEnd()
+
+        if (self.currentRounds >= 15 and self.state == "playing"): self.gameEnd()
 
         self.tickState()        
 
@@ -86,7 +89,9 @@ class Game:
             self.renderSpecialState()
 
         textrender.drawText(self.screen, timer, (255, 216, 0), self.screenSize[0] / 10 * 9, self.screenSize[1] / 10)
-        
+        textrender.drawText(self.screen, str(self.deck.getCardAmount()), (255, 216, 0), self.screenSize[0] / 10, self.screenSize[1] / 10)
+        textrender.drawText(self.screen, str(self.state), (255, 216, 0), self.screenSize[0] / 2, self.screenSize[1] / 10 * 9)
+
         textrender.drawText(self.screen, self.player1.getName() + ": " + str(self.player1.getPoints()), (255, 216, 0), self.screenSize[0] / 20 * 3, self.screenSize[1] / 10 * 9)
         textrender.drawText(self.screen, self.player2.getName() + ": " + str(self.player2.getPoints()), (33, 182, 196), self.screenSize[0] / 20 * 17, self.screenSize[1] / 10 * 9)
         pygame.display.flip()
@@ -109,7 +114,7 @@ class Game:
                 announcementText = " selected a wrong set."
             textrender.drawText(self.screen, self.announcementPlayer.getName() + announcementText, self.announcementPlayer.getRGBValue(), self.screenSize[0] / 2, self.screenSize[1] / 10 * 8)
         else:
-            textrender.drawText(self.screen, "Placing new cards.", self.announcementPlayer.getRGBValue(), self.screenSize[0] / 2, self.screenSize[1] / 10 * 8)
+            textrender.drawText(self.screen, "Placing new cards.", (79, 205, 104), self.screenSize[0] / 2, self.screenSize[1] / 10 * 8)
 
     def handleEvent(self, event):
         """Handles all pygame events."""
@@ -156,7 +161,6 @@ class Game:
     def tickState(self):
         #Stops state if state timer is done
         if self.state != "playing" and (pygame.time.get_ticks() - self.stateStartTime) >= 3000:
-            print("state stopped")
             if self.state == "foundset":
                 self.table.replaceThreeCards(self.deck, self.blinkingCards)
             elif self.state == "newcards":
@@ -189,7 +193,6 @@ class Game:
 
     def playerSet(self, player: Player, setCards: list):
         player.addPoint()
-        print(self.state)
         if self.state == "playerwin":
             return
         self.announcementPlayer = player

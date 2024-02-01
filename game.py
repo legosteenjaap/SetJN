@@ -90,8 +90,10 @@ class Game:
 
         textrender.drawText(self.screen, timer, (255, 216, 0), self.screenSize[0] / 10 * 9, self.screenSize[1] / 10)
         textrender.drawText(self.screen, str(self.deck.getCardAmount()), (255, 216, 0), self.screenSize[0] / 10, self.screenSize[1] / 10)
-        textrender.drawText(self.screen, str(self.state), (255, 216, 0), self.screenSize[0] / 2, self.screenSize[1] / 20 * 18)
-        textrender.drawText(self.screen, str(self.blinkingCards), (255, 216, 0), self.screenSize[0] / 2, self.screenSize[1] / 20 * 19)
+        
+        #Used for debugging
+        #textrender.drawText(self.screen, str(self.state), (255, 216, 0), self.screenSize[0] / 2, self.screenSize[1] / 20 * 18)
+        #textrender.drawText(self.screen, str(self.blinkingCards), (255, 216, 0), self.screenSize[0] / 2, self.screenSize[1] / 20 * 19)
 
         textrender.drawText(self.screen, self.player1.getName() + ": " + str(self.player1.getPoints()), (255, 216, 0), self.screenSize[0] / 20 * 3, self.screenSize[1] / 10 * 9)
         textrender.drawText(self.screen, self.player2.getName() + ": " + str(self.player2.getPoints()), (33, 182, 196), self.screenSize[0] / 20 * 17, self.screenSize[1] / 10 * 9)

@@ -58,10 +58,10 @@ class Card:
         if number in numbers:
             self._number=number
         else: return False
-
     
     def toVector(self):
-        return [colors.index(self._color)+1, shapes.index(self._shape)+1, fills.index(self._fill)+1, numbers.index(self._number)+1]
+        """Returns the card as an array of numbers a.k.a. a vector"""
+        return [colors.index(self._color) + 1, shapes.index(self._shape) + 1, fills.index(self._fill) + 1, numbers.index(self._number) + 1]
 
 class CardSprite(pygame.sprite.Sprite):
     
@@ -73,8 +73,11 @@ class CardSprite(pygame.sprite.Sprite):
     
     def replaceCard(self, card: Card):
         """Replace the currently rendered card with another card."""
+
+        #Scales the card with the resolution of your screen
         widthMultiplier = (self._screenSize[0] / 1920)
         heightMultiplier = (self._screenSize[1] / 1080)
+        
         installPath = os.path.dirname(os.path.realpath(__file__))
         self.surf = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "cards", str(card._color + card._shape + card._fill + card._number + ".png"))), (130 * widthMultiplier, 240 * heightMultiplier))
         self.rect = self.surf.get_rect()

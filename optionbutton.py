@@ -12,7 +12,7 @@ class OptionButton(Button):
         if self.optionIndex < 0:
             self.optionIndex = 0
         self.action(self.options[self.optionIndex])
-        self.buildTextRender(self.options[self.optionIndex])
+        self.replaceText(self.options[self.optionIndex])
 
 
     def scrollRight(self):
@@ -20,21 +20,21 @@ class OptionButton(Button):
         if self.optionIndex >= len(self.options) - 1:
             self.optionIndex = len(self.options) - 1
         self.action(self.options[self.optionIndex])
-        self.buildTextRender(self.options[self.optionIndex])
+        self.replaceText(self.options[self.optionIndex])
     
     def scroll(self):
         self.optionIndex = self.optionIndex + 1
         if self.optionIndex >= len(self.options):
             self.optionIndex = 0
-        self.buildTextRender(self.options[self.optionIndex])
+        self.replaceText(self.options[self.optionIndex])
 
     def setIndex(self, index: int):
         self.optionIndex = index
         self.text = self.options[self.optionIndex]
-        self.buildTextRender(self.options[self.optionIndex])
+        self.replaceText(self.options[self.optionIndex])
 
     def doAction(self):
         self.scroll()
         self.action(self.options[self.optionIndex])
-        self.buildTextRender(self.options[self.optionIndex])
+        self.replaceText(self.options[self.optionIndex])
 

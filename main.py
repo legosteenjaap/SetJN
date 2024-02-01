@@ -12,6 +12,7 @@ screen=pygame.display.set_mode(screenSize)
 pygame.display.toggle_fullscreen()
 menu = Menu(screen, screenSize)
 
+#Loop which runs the game untill you quit the game
 while running:
 
     while not menu.isFinished:
@@ -20,6 +21,7 @@ while running:
     if menu.shouldCloseWindow:
         running = False
         break
+
     game = Game(screen, screenSize, menu.isMultiplayer, menu.input, menu.timeOutTime)
     while not game.isFinished:
         game.tick()

@@ -24,7 +24,9 @@ class Deck:
 
     def drawCards(self, amount: int):
         """Removes the top cards from the deck and returns these as a list."""
-        if len(self._cards) < amount: return False
+        if len(self._cards) < amount: 
+            print("Not enough cards.")
+            return False
         drawnCards = []
         for i in range(0, amount):
             drawnCards.append(self._cards.pop())

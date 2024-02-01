@@ -6,6 +6,7 @@ from table import Table
 from deck import Deck
 from player import Player
 import os
+import textrender
 import set_algorithms
 
 class Game:
@@ -13,8 +14,6 @@ class Game:
     def __init__(self, screen: Surface, screenSize, isMultiplayer: bool, input: str, timeOutTime: int):
         self.screen = screen
         self.screenSize = screenSize
-        installPath = os.path.dirname(os.path.realpath(__file__))
-        self.font = pygame.font.Font(os.path.join(installPath, "assets", "fonts", "PixelEmulator-xq08.ttf"), 48)
         self._isMultiplayer = isMultiplayer
         self._input = input
         if not isMultiplayer :
@@ -56,10 +55,10 @@ class Game:
         
         self.table.displayCards(self.screen, self.players)
 
-        self.drawText(self.screen, str(self.timeOutTime - int((pygame.time.get_ticks() - self.startTime) / 1000)), (255, 216, 0), self.screenSize[0] / 10 * 9, self.screenSize[1] / 10)
+        textrender.drawText(self.screen, str(self.timeOutTime - int((pygame.time.get_ticks() - self.startTime) / 1000)), (255, 216, 0), self.screenSize[0] / 10 * 9, self.screenSize[1] / 10)
 
-        self.drawText(self.screen, self.player1.getName() + ": " + str(self.player1.getPoints()), (255, 216, 0), self.screenSize[0] / 20 * 3, self.screenSize[1] / 10 * 9)
-        self.drawText(self.screen, self.player2.getName() + ": " + str(self.player2.getPoints()), (33, 182, 196), self.screenSize[0] / 20 * 17, self.screenSize[1] / 10 * 9)
+        textrender.drawText(self.screen, self.player1.getName() + ": " + str(self.player1.getPoints()), (255, 216, 0), self.screenSize[0] / 20 * 3, self.screenSize[1] / 10 * 9)
+        textrender.drawText(self.screen, self.player2.getName() + ": " + str(self.player2.getPoints()), (33, 182, 196), self.screenSize[0] / 20 * 17, self.screenSize[1] / 10 * 9)
         pygame.display.flip()
 
     def handleEvent(self, event):
@@ -67,6 +66,9 @@ class Game:
         if event.type == pygame.QUIT:
             self.isFinished = True
             self.shouldCloseWindow = True
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                self.isFinished = True
         if self._input == "mouse":
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.lastPressedButtons = pygame.mouse.get_pressed()
@@ -98,10 +100,7 @@ class Game:
         x, y = pygame.mouse.get_pos()
         player.hoveredOverCardIndex = self.table.getCardIndexFromPos(x, y)
 
-    def drawText(self,screen: Surface, text: str, rgbColor, XPos: int, YPos: int):
-        img = self.font.render(text, True,  rgbColor)
-        rect = img.get_rect()
-        screen.blit(img, (XPos - rect.width / 2, YPos - rect.height / 2))
+
 
 
     def timeOut(self):

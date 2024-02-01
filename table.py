@@ -116,12 +116,13 @@ class Table:
                         select = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "select", player.getColor() + "Select" + selectVersion + ".png")), (130, 240))
                         screen.blit(select, (cardXPos, cardYPos))
 
-            if not players[0].hoveredOverCardIndex == players[1].hoveredOverCardIndex:
+            if not players[0].hoveredOverCardIndex == players[1].hoveredOverCardIndex or players[1].isComputer():
                 for player in players:
-                    if cardIndex == player.hoveredOverCardIndex:
-                        hover = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "hover", player.getColor() + "Hover.png")), (130, 240))
-                        screen.blit(hover, (cardXPos, cardYPos))
-            elif cardIndex == player.hoveredOverCardIndex:
+                    if not player.isComputer():
+                        if cardIndex == player.hoveredOverCardIndex:
+                            hover = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "hover", player.getColor() + "Hover.png")), (130, 240))
+                            screen.blit(hover, (cardXPos, cardYPos))
+            elif cardIndex == player.hoveredOverCardIndex and not players[1].isComputer():
                 hover = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "hover", "secretHover.png")), (130, 240))
                 screen.blit(hover, (cardXPos, cardYPos))
                 

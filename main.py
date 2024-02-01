@@ -1,5 +1,6 @@
 import pygame
 from game import Game
+from menu import Menu
 
 running = True
 
@@ -11,12 +12,18 @@ pygame.display.toggle_fullscreen()
 
 while running:
 
+    menu = Menu(screen, screenSize)
+    while not menu.isFinished:
+        menu.tick()
 
-    game = Game(screen, screenSize, True, "keyboard", 15)
+    if menu.shouldCloseWindow:
+        running = False
+        break
+
+    game = Game(screen, screenSize, menu.isMultiplayer, "keyboard", 15)
     while not game.isFinished:
         game.tick()
 
     if game.shouldCloseWindow: running = False
-
 
 pygame.quit()

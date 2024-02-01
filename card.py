@@ -67,12 +67,14 @@ class CardSprite(pygame.sprite.Sprite):
     
     """A class for representing a renderable object that holds a card."""
 
-    def __init__(self):
+    def __init__(self, screenSize):
         super(CardSprite, self).__init__()
+        self._screenSize = screenSize
     
     def replaceCard(self, card: Card):
         """Replace the currently rendered card with another card."""
         installPath = os.path.dirname(os.path.realpath(__file__))
-        self.surf = pygame.image.load(os.path.join(installPath, "kaarten", str(card._color + card._shape + card._fill + card._number + ".gif")))
+        self.surf = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "cards", str(card._color + card._shape + card._fill + card._number + ".png"))), (130, 240))
+        self.surf 
         self.rect = self.surf.get_rect()
         self.card = card

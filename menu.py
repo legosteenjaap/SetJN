@@ -14,9 +14,13 @@ class Menu():
         self.shouldCloseWindow = False
         self.startButton = Button(screen, "start", screenSize[0] / 2, screenSize[1] / 2, self.startGame)
         self.numPlayerButton = OptionButton(screen, ["singleplayer", "multiplayer"], screenSize[0] / 2, screenSize[1] / 2 + self.startButton.rect.height, self.switchMultiplayer)
+        self.inputButton = OptionButton(screen, ["mouse", "keyboard"], screenSize[0] / 2, screenSize[1] / 2 + self.startButton.rect.height, self.switchInput)
+
         self.buttons = [self.startButton, self.numPlayerButton]
         self.isMultiplayer = False
+        self.input = "mouse"
         self.lastPressedButtons = pygame.mouse.get_pressed()
+        self.state = "playing"
 
     def tick(self): 
         self.updateHoveredOverButtonMouse()
@@ -53,6 +57,11 @@ class Menu():
     
     def startGame(self):
         self.isFinished = True
+    
+    def switchInput(self, inputType: str):
+        if inputType == "mouse":
+            self.numPlayerButton.setIndex(0)
+
 
     def switchMultiplayer(self, mode: str):
         if mode == "singleplayer":

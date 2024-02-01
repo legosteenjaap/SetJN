@@ -24,6 +24,9 @@ class OptionButton(Button):
         if self.optionIndex > len(self.options) - 1:
             self.optionIndex = 0
 
+    def setIndex(self, index: int):
+        self.optionIndex = index
+
     def doAction(self):
         self.scroll()
         self.action(self.options[self.optionIndex])

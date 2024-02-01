@@ -20,7 +20,7 @@ while running:
         running = False
         break
 
-    game = Game(screen, screenSize, menu.isMultiplayer, "keyboard", 15)
+    game = Game(screen, screenSize, menu.isMultiplayer, "keyboard", 30  )
     while not game.isFinished:
         game.tick()
 

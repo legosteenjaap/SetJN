@@ -10,6 +10,7 @@ class Player:
         self._name = name
         self.selectedCards = []
         self._isComputer = isComputer
+        self.playerNum = playerNum
         self.hoveredOverCardIndex = playerNum + 7
         
         if playerNum == 1:
@@ -41,6 +42,12 @@ class Player:
     def getColor(self):
         return self.color
     
+    def getRGBValue(self):
+        if self.playerNum == 1:
+            return (255, 216, 0)
+        elif self.playerNum == 2:
+            return (33, 182, 196)
+
     def selectCard(self, cardIndex: int):
         if cardIndex in self.selectedCards:
             self.selectedCards.remove(cardIndex)

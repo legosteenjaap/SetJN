@@ -5,57 +5,61 @@ import matplotlib.pyplot as plt
 
 deck = Deck()
 
-def drawNCards(n: int):
-    """same as drawcards function, but allows drawing more 81 cards"""
-    visibleCards=[]
-    while 1:
-        if deck.getCardAmount() >= n:
-            visibleCards = visibleCards + deck.drawCards(n)
+def drawNCards(cardAmount: int):
+    """Same as drawcards function, but allows drawing more 81 cards"""
+    visibleCards = []
+    while True:
+        if deck.getCardAmount() >= cardAmount:
+            visibleCards = visibleCards + deck.drawCards(cardAmount)
             return visibleCards
         else:
-            n-=deck.getCardAmount()
+            cardAmount -= deck.getCardAmount()
             visibleCards = visibleCards + deck.drawCards(deck.getCardAmount())
             deck.populate()
             deck.shuffle()
         
 
-def timeFunction(k: int,function,visibleCards: list):
-    """runs the function on the same visble cards k times and returns the evarage"""
+def timeFunction(timingPrecision: int, function, visibleCards: list):
+    """Runs the function on the same visble cards k times and returns the average"""
     starttime = time.time()
-    for i in range(k):
+    for i in range(timingPrecision):
         function(visibleCards)
     endtime = time.time()
-    return (endtime-starttime)/k
+    return (endtime-starttime) / timingPrecision
 
-def averageTime(n: int,m: int,k: int,function):
-    """runs timeFunction() on different decks m times and returns the evarage"""
-    average=0
-    for i in range(m):
+def averageTime(cardAmount: int ,sampleSize: int ,timingPrecision: int,function):
+    """Runs timeFunction() on different decks m times and returns the average"""
+    average = 0
+    for i in range(sampleSize):
         deck.populate()
         deck.shuffle()
-        visibleCards=drawNCards(n)
-        average+=timeFunction(k,function,visibleCards)/m
+        visibleCards = drawNCards(cardAmount)
+        average += timeFunction(timingPrecision,function,visibleCards) / sampleSize
     return average
     
 
 timingPrecision=1
 sampleSize=1
 
-cardamount=[]
-timegraph1=[]
-timegraph2=[]
-comparison=[]
-for i in range(3,400):
-    """takes the averagetime for each cardamount (i) and plots it against the function:t=(n-2)**3/16700000"""
-    print(i)
-    cardamount.append(i)
-    #timegraph1.append(averageTime(i,sampleSize,timingPrecision,set_algorithms.findOneSet))
-    timegraph2.append(averageTime(i,sampleSize,timingPrecision,set_algorithms.findSets))
-    comparison.append((i-2)**3/1680000)
-#plt.plot(cardamount,timegraph1,label="time find one set function")
-plt.plot(cardamount,timegraph2,label="time find set function")
-plt.plot(cardamount,comparison,label="(n-2)**3/16800000")
+cardAmounts = []
+timeGraph1 = []
+timeGraph2 = []
+comparison = []
+
+c = 1680000
+
+for cardAmount in range(3, 400):
+    """Takes the averagetime for each cardAmount and plots it against the function: t = (cardAmount-2) ^ 3 / c"""
+    print(cardAmount)
+    cardAmounts.append(cardAmount)
+    timeGraph2.append(averageTime(cardAmount,sampleSize,timingPrecision,set_algorithms.findSets))
+    comparison.append((cardAmount - 2) ** 3 / c)
+
+plt.plot(cardAmounts,timeGraph2,label = "time find set function")
+plt.plot(cardAmounts,comparison,label = "(cardAmount-2)**3/c")
+
 plt.title("time complexity")
 plt.xlabel("card amounts")
 plt.ylabel("time(s)")
+
 plt.show()

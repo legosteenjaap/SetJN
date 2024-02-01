@@ -11,7 +11,7 @@ class Button:
             screen (Surface): The screen on which the game is drawn
             text (str): The text displayed on the button
             xPos, yPos (int) Stores the position of the button
-            action (function) Stores the function which is executed when the button is activated"""
+            action (callable) Stores the function which is executed when the button is activated"""
 
     def __init__(self, screen: Surface, text: str, xPos: int, yPos: int, action: callable):
         self.screen = screen
@@ -28,7 +28,7 @@ class Button:
         self.img = textrender.font.render(text, True,  (0,0,0))
         self.rect = self.img.get_rect()
 
-        #If the button is selected the text becomes a greenish color
+        # If the button is selected the text becomes a greenish color
         self.imgSelect = textrender.font.render(text, True,  (79, 205, 104))
 
     def render(self):
@@ -42,6 +42,6 @@ class Button:
         """Checks if a point collides with the button"""
         return self.rect.collidepoint(collisionXPos - (self.xPos - self.rect.width / 2), collisionYPos - (self.yPos - self.rect.height / 2))
 
-    def doAction(self):
+    def doUpdateAction(self):
         """Executes the action saved with the button"""
         self.action()

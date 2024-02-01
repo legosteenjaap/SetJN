@@ -13,10 +13,11 @@ class Menu():
         self.isFinished = False
         self.shouldCloseWindow = False
         self.startButton = Button(screen, "start", screenSize[0] / 2, screenSize[1] / 2, self.startGame)
-        self.numPlayerButton = OptionButton(screen, ["singleplayer", "multiplayer"], screenSize[0] / 2, screenSize[1] / 2 + self.startButton.rect.height, self.switchMultiplayer)
-        self.inputButton = OptionButton(screen, ["mouse", "keyboard"], screenSize[0] / 2, screenSize[1] / 2 + self.startButton.rect.height, self.switchInput)
-
-        self.buttons = [self.startButton, self.numPlayerButton]
+        buttonYDiff = self.startButton.rect.height
+        self.numPlayerButton = OptionButton(screen, ["singleplayer", "multiplayer"], screenSize[0] / 2, screenSize[1] / 2 + buttonYDiff, self.switchMultiplayer)
+        self.inputButton = OptionButton(screen, ["mouse", "keyboard"], screenSize[0] / 2, screenSize[1] / 2 + buttonYDiff * 2, self.switchInput)
+        self.quitButton = Button(screen, "quit", screenSize[0] / 2, screenSize[1] / 2 + buttonYDiff * 3, self.quitGame)
+        self.buttons = [self.startButton, self.numPlayerButton, self.inputButton, self.quitButton]
         self.isMultiplayer = False
         self.input = "mouse"
         self.lastPressedButtons = pygame.mouse.get_pressed()
@@ -38,9 +39,8 @@ class Menu():
         rect = logo.get_rect()
         self.screen.blit(logo, (self.screenSize[0] / 2 - rect.width / 2, 0))
 
-        self.startButton.render()
-        self.numPlayerButton.render()
-
+        for button in self.buttons:
+            button.render()
         pygame.display.flip()
 
     def handleEvent(self, event):
@@ -58,15 +58,25 @@ class Menu():
     def startGame(self):
         self.isFinished = True
     
+    def quitGame(self):
+        self.isFinished = True
+        self.shouldCloseWindow = True
+
     def switchInput(self, inputType: str):
         if inputType == "mouse":
             self.numPlayerButton.setIndex(0)
-
+            self.isMultiplayer = False
+            self.input = "mouse"
+        elif inputType == "keyboard":
+            self.input = "keyboard"
 
     def switchMultiplayer(self, mode: str):
         if mode == "singleplayer":
             self.isMultiplayer = False
         elif mode == "multiplayer":
+            if self.inputButton.optionIndex == 0:
+                self.inputButton.setIndex(1)
+                self.switchInput("keyboard")
             self.isMultiplayer = True
         
     

@@ -18,14 +18,18 @@ class OptionButton(Button):
         self.optionIndex = self.optionIndex + 1
         if self.optionIndex > len(self.options) - 1:
             self.optionIndex = len(self.options) - 1
+        self.buildTextRender(self.options[self.optionIndex])
     
     def scroll(self):
         self.optionIndex = self.optionIndex + 1
         if self.optionIndex > len(self.options) - 1:
             self.optionIndex = 0
+        self.buildTextRender(self.options[self.optionIndex])
 
     def setIndex(self, index: int):
         self.optionIndex = index
+        self.text = self.options[self.optionIndex]
+        self.buildTextRender(self.options[self.optionIndex])
 
     def doAction(self):
         self.scroll()

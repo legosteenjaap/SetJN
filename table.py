@@ -14,8 +14,7 @@ from card import (
 )
 import pygame
 import os
-
-cardMargin = 20
+import math
 
 class Table:
     """A class for representing the table on which you play set.
@@ -25,6 +24,9 @@ class Table:
     def __init__(self, startDeck: Deck, screenSize):
         self._cards = [CardSprite(screenSize) for i in range(0, 12)]
         self._screenSize = screenSize
+        self.widthMultiplier = (screenSize[0] / 1920)
+        self.heightMultiplier = (screenSize[1] / 1080)
+        self.cardMargin = int (20 * math.sqrt(self.widthMultiplier * self.heightMultiplier))
         self.replaceAllCards(startDeck)
 
     def replaceAllCards(self, deck: Deck):
@@ -78,8 +80,8 @@ class Table:
         """
         cardWidth = cardSprite.surf.get_width()
         cardHeight = cardSprite.surf.get_height()
-        cardXPos = self._screenSize[0]/2 - (cardWidth+cardMargin)*(index%6-2)
-        cardYPos = self._screenSize[1]/2 - (cardHeight+cardMargin)*((index-index%6)/6+1)
+        cardXPos = self._screenSize[0]/2 - (cardWidth+self.cardMargin)*(index%6-2)
+        cardYPos = self._screenSize[1]/2 - (cardHeight+self.cardMargin)*((index-index%6)/6+1)
         hitbox = (cardXPos, cardYPos, cardWidth, cardHeight)
         return hitbox
 
@@ -117,17 +119,17 @@ class Table:
                     if not player.isComputer():
                         if cardIndex in player.selectedCards:
                             selectVersion = str(int((pygame.time.get_ticks() / 200) % 4 + 1))
-                            select = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "select", player.getColor() + "Select" + selectVersion + ".png")), (130, 240))
+                            select = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "select", player.getColor() + "Select" + selectVersion + ".png")), (130 * self.widthMultiplier, 240 * self.heightMultiplier))
                             screen.blit(select, (cardXPos, cardYPos))
 
                 if not players[0].hoveredOverCardIndex == players[1].hoveredOverCardIndex or players[1].isComputer():
                     for player in players:
                         if not player.isComputer():
                             if cardIndex == player.hoveredOverCardIndex:
-                                hover = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "hover", player.getColor() + "Hover.png")), (130, 240))
+                                hover = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "hover", player.getColor() + "Hover.png")), (130 * self.widthMultiplier, 240 * self.heightMultiplier))
                                 screen.blit(hover, (cardXPos, cardYPos))
                 elif cardIndex == player.hoveredOverCardIndex and not players[1].isComputer():
-                    hover = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "hover", "secretHover.png")), (130, 240))
+                    hover = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "hover", "secretHover.png")), (130 * self.widthMultiplier, 240 * self.heightMultiplier))
                     screen.blit(hover, (cardXPos, cardYPos))
                 
 

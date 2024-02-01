@@ -34,8 +34,11 @@ class Menu():
         #Fills the screen with a greenish color
         self.screen.fill((32,134,29))
 
+
+        widthMultiplier = (self.screenSize[0] / 1920)
+        heightMultiplier = (self.screenSize[1] / 1080)
         installPath = os.path.dirname(os.path.realpath(__file__))
-        logo = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "logo.png")), (820, 480))
+        logo = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "logo.png")), (820 * widthMultiplier, 480 * heightMultiplier))
         rect = logo.get_rect()
         self.screen.blit(logo, (self.screenSize[0] / 2 - rect.width / 2, 0))
 

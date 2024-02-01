@@ -109,19 +109,21 @@ class Table:
             screen.blit(cardSprite.surf, (cardXPos, cardYPos))
 
             installPath = os.path.dirname(os.path.realpath(__file__))
-
             for player in players:
                 if not player.isComputer():
                     if cardIndex in player.selectedCards:
                         selectVersion = str(int((pygame.time.get_ticks() / 200) % 4 + 1))
-                        if cardIndex == player.hoveredOverCardIndex:
-                            selectVersion = "1"
                         select = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "select", player.getColor() + "Select" + selectVersion + ".png")), (130, 240))
                         screen.blit(select, (cardXPos, cardYPos))
 
+            if not players[0].hoveredOverCardIndex == players[1].hoveredOverCardIndex:
+                for player in players:
                     if cardIndex == player.hoveredOverCardIndex:
                         hover = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "hover", player.getColor() + "Hover.png")), (130, 240))
                         screen.blit(hover, (cardXPos, cardYPos))
+            elif cardIndex == player.hoveredOverCardIndex:
+                hover = pygame.transform.scale(pygame.image.load(os.path.join(installPath, "assets", "hover", "secretHover.png")), (130, 240))
+                screen.blit(hover, (cardXPos, cardYPos))
                 
 
 

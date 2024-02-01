@@ -10,15 +10,17 @@ import set_algorithms
 
 class Game:
 
-    def __init__(self, screen: Surface, screenSize, isMultiplayer: bool, input: str, maxRounds: int, timeOutTime: int):
+    def __init__(self, screen: Surface, screenSize, isMultiplayer: bool, input: str, timeOutTime: int):
         self.screen = screen
         self.screenSize = screenSize
         installPath = os.path.dirname(os.path.realpath(__file__))
         self.font = pygame.font.Font(os.path.join(installPath, "assets", "fonts", "PixelEmulator-xq08.ttf"), 48)
         self._isMultiplayer = isMultiplayer
         self._input = input
-        self.maxRounds = maxRounds
-        self.timeOutTime = timeOutTime
+        if not isMultiplayer :
+            self.timeOutTime = timeOutTime
+        else:
+            self.timeOutTime = 30
         self.currentRounds = 0
         self.player1 = Player("player1", False, 1)
         self.player2 = Player("player2", not isMultiplayer, 2)
@@ -31,7 +33,6 @@ class Game:
         self.startRound()
         
     def startRound(self):
-        if self.currentRounds > self.maxRounds: self.gameEnd()
         self.currentRounds += 1
         self.startTime = pygame.time.get_ticks()
 
@@ -54,6 +55,9 @@ class Game:
         self.screen.fill((32,134,29))
         
         self.table.displayCards(self.screen, self.players)
+
+        self.drawText(self.screen, str(self.timeOutTime - int((pygame.time.get_ticks() - self.startTime) / 1000)), (255, 216, 0), self.screenSize[0] / 10 * 9, self.screenSize[1] / 10)
+
         self.drawText(self.screen, self.player1.getName() + ": " + str(self.player1.getPoints()), (255, 216, 0), self.screenSize[0] / 20 * 3, self.screenSize[1] / 10 * 9)
         self.drawText(self.screen, self.player2.getName() + ": " + str(self.player2.getPoints()), (33, 182, 196), self.screenSize[0] / 20 * 17, self.screenSize[1] / 10 * 9)
         pygame.display.flip()

@@ -11,7 +11,8 @@ pygame.display.toggle_fullscreen()
 
 while running:
 
-    game = Game(screen, screenSize, True, "keyboard", 5, 1)
+
+    game = Game(screen, screenSize, True, "keyboard", 15)
     while not game.isFinished:
         game.tick()
 
